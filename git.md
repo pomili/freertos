@@ -72,4 +72,24 @@ rm file
 
 ssh-keygen -t rsa -C "youremail@example.com"
 
+git remote add origin "url"
 
+git push -u origin master 
+
+把本地仓库分支master内容推送到元仓库去
+
+## 创建于合并分支
+
+创建分支
+
+git checkout -b dev 创建并切换分支
+
+-b 表示创建并切换相当于
+
+git brancn dev 
+
+git checkout dev
+
+git branch 查看当前分支
+
+git remote -v 查看远程库信息
