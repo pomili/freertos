@@ -4,22 +4,36 @@
 #include "freertos/Freertos.h"
 #include "freertos/task.h"
 #include "esp_log.h"
- 
-void myTask(void *pvParam){
+int num0 = 0;
+int num1 = 0; 
+void myTask1(void *pvParam){
 	for(;;){
-		printf("hello world\n");
+		num1++;
 		vTaskDelay(1000/portTICK_PERIOD_MS);
-		ESP_LOGI("myTask","run");
-		ESP_LOGE("myTask","run");
-		ESP_LOGD("myTask","run");
+		ESP_LOGE("myTask1","%d",num1);
+		if(num1 == 50)
+		vTaskDelete(NULL);
 	}
 
 }
-
+void myTask0(void *pvParam){
+	for(;;){
+		num0++;
+		ESP_LOGI("myTask0","%d",num0);
+		vTaskDelay(500/portTICK_PERIOD_MS);
+	}
+}
  
 void app_main(void)
-{
-	xTaskCreate(myTask,"myTask",1024,NULL,1,NULL);
-	ESP_LOGI("freertos","ok");
-	vTaskDelay(1000);
+{	
+	TaskHandle_t myHandle1 = NULL;
+	TaskHandle_t myHandle0 = NULL;
+	xTaskCreate(myTask1,"myTask1",4096,NULL,1,&myHandle1);
+	xTaskCreate(myTask0,"myTask0",4096,NULL,2,&myHandle0);
+	vTaskDelay(8000/portTICK_PERIOD_MS);
+	if(myHandle0 != NULL){
+		vTaskDelete(myHandle0);
+		printf("my task1 deleted\n");
+	}
+	
 }
